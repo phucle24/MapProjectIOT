@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewData["Title"] = "Map";
+}
+@section Scripts{
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/map.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/map4dsdk@1.4.0.prod.js"></script>
+    <script src="../sdk-leaflet/map4dll@1.3.4.prod.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/eventhandler.js"></script>
+    <script src="~/js/golbalInitButton.js"></script>
+    <link href="~/lib/fontawesome/css/all.css" rel="stylesheet" />
+    <script src="~/lib/fontawesome/js/all.js"></script>
+}
+
+<div id="map">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Controls</a>
+        <div class="dropdown time">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Thời gian
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <button type="button" id="option1" class="btn btn-primary btn-sm btn-block">Chiều</button>
+                <button type="button" id="option2" class="btn btn-success btn-sm btn-block">Tối</button>
+            </ul>
+        </div>
+        <div class="dropdown wheather">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Thời tiết
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <button type="button" id="wheather_sun" class="btn btn-primary btn-sm btn-block">Nắng</button>
+                <button type="button" id="wheather_rain" class="btn btn-success btn-sm btn-block">Mưa</button>
+                <button type="button" id="wheather_snow" class="btn btn-info btn-sm btn-block">Tuyết</button>
+            </ul>
+        </div>
+        <div class="dropdown wheather">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Vẽ hình
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <input type="radio" id="shape_marker" name="shapes" value="marker">
+                <label for="shape_marker">Marker</label>
+                <br>
+                <input type="radio" id="shape_polyline" name="shapes" value="polyline">
+                <label for="shape_polyline">Polyline</label>
+                <br>
+                <input type="radio" id="shape_circle" name="shapes" value="cricle">
+                <label for="shape_circle">Cricle</label>
+                <br>
+            </ul>
+        </div>
+        <div class="dropdown wheather">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Tạo object
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <label for="fname">Id:</label>
+                <input type="text" id="input_id" name="fname">
+                <br>
+                <label for="fname">Name:</label>
+                <input type="text" id="input_name" name="fname">
+                <br>
+                <button id="btn_object" class="btn btn-success btn-sm btn-block">Create</button>
+            </ul>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Hiển thị
+            </button>
+            <div class="dropdown-menu effect">
+                <a class="dropdown-item">
+                    <!-- Default unchecked -->
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="effect__shawdown">
+                        <label class="custom-control-label" for="effect__shawdown">Hiệu ứng đổ bóng</label>
+                    </div>
+                </a>
+                <a class="dropdown-item" href="#">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="effect__water">
+                        <label class="custom-control-label" for="effect__water">Hiệu ứng mặt nước</label>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Basic dropdown -->
+    </nav>
+</div>
+
+<div class="popupDetail" id="popupDetail" style="display: none;">
+    <div class="detail-content">
+        <div class="object">Object Id: <span id="objId"></span></div>
+        <div class="object">Object Name: <span id="objName"></span></div>
+    </div>
+    <a class="detail-close-button" href="#close">×</a>
+</div>
+<div class="popupDetail" id="popupDetail2" style="display: none;">
+    <div class="detail-content">
+        <div class="object">
+            Marker: <br />
+            <span id="marker_lng"></span>
+            <span id="marker_lat"></span>
+        </div>
+    </div>
+    <a class="detail-close-button" href="#close">×</a>
+</div>
+<!--
+<div class="bar1">
+    <button id="btn__turn-right" class="btn-control btn-turn-right tooltip-btn">
+        <span class="tooltiptext-btn"><i class="fas fa-redo"></i></span>
+    </button>
+    <button id="btn__turn-left" class="btn-control btn-turn-left tooltip-btn">
+        <span class="tooltiptext-btn"><i class="fas fa-undo"></i></span>
+    </button>
+    <button id="btn__center" class="btn-control btn-locate tooltip-btn ">
+        <span class="tooltiptext-btn"><i class="fas fa-dot-circle"></i></span>
+    </button>
+    <button id="btn__switch3d" class="btn-control tooltip-btn btn-3d" style="display: none">
+        <span class="tooltiptext-btn">3D</span>
+    </button>
+    <button id="btn__switch2d" class="btn-control tooltip-btn btn-3d">
+        <span class="tooltiptext-btn">2D</span>
+    </button>
+    <div class="bar2">
+       <button class="btn-control btn-direct tooltip-btn">
+            <span class="tooltiptext-btn">Điều hướng</span>
+            <div style="transform: rotate(-229.8deg);">
+            </div>
+        </button>
+         
+        <div class="bar3">
+            <button class="btn-control btn-up tooltip-btn" id="btn__tilt-up">
+                <span class="tooltiptext-btn"><i class="fas fa-caret-up"></i></span>
+            </button>
+            <button class="btn-control btn-down tooltip-btn" id="btn__tilt-down">
+                <span class="tooltiptext-btn"><i class="fas fa-caret-down"></i></span>
+            </button>
+            <button class="btn-control btn-zoom-in tooltip-btn" id="btn__zoom-plus">
+                <span class="tooltiptext-btn"><i class="fas fa-search-plus"></i></span>
+            </button>
+            <button class="btn-control btn-zoom-out tooltip-btn" id="btn__zoom-minus">
+                <span class="tooltiptext-btn"><i class="fas fa-search-minus"></i></span>
+            </button>
+        </div>
+    </div>
+</div>
+    -->

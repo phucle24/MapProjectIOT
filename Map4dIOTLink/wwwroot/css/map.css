@@ -1,0 +1,99 @@
+﻿
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+body {
+    margin: 0px;
+    height: 100%;
+    padding-top: 0px !important;
+}
+
+#map {
+    position: absolute;
+    width: 90%;
+    height: 75%;
+    background-color: #f2efe9;
+}
+
+.popupDetail {
+    opacity: 1;
+    position: absolute;
+}
+
+.detail-content {
+    width: 298px;
+    height: 126px;
+    background-color: white;
+    color: #333;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+    border-radius: 12px;
+    padding: 10px;
+    position: absolute;
+    top: 64px;
+}
+
+.detail-close-button {
+    position: relative;
+    top: 61px;
+    right: -283px;
+    padding: 4px 4px 0 0;
+    border: none;
+    text-align: center;
+    width: 18px;
+    height: 14px;
+    font: 16px/14px Tahoma, Verdana, sans-serif;
+    color: blue;
+    text-decoration: none;
+    font-weight: bold;
+    background: transparent;
+    text-decoration: none !important;
+}
+.detail-close-button:hover {
+    color: red;
+}
+
+.btn {
+    margin-top: 10px;
+}
+.object{
+    color: black;
+    font-weight: bold;
+}
+span#objId, span#objName {
+    font-weight: 100;
+}
+.wheather{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.dropdown-menu.show{
+    padding: 20px !important;
+}
+.dropdown-menu.effect.show {
+    left: 364px !important;
+}
+.bar1 {
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+}
+.bar2{
+    margin-top: 10px
+}
