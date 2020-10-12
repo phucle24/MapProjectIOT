@@ -127,9 +127,10 @@ map.addListener("click", (args) => {
 
 $('#btn_object').click(function () {
     console.log('aaaaa');
-    let mapObject = new map4d.MapObject({
+    let mapObject1 = new map4d.MapObject({
         id: $('#input_id').val(),
         name: $('#input_name').val(),
+        height: 100,
         coordinates: [[106.707764, 10.774544],
         [106.709001, 10.773766],
         [106.708627, 10.772759],
@@ -137,8 +138,35 @@ $('#btn_object').click(function () {
         height: 100,
         draggable: true
     })
-    mapObject.setMap(map)
+    mapObject1.setMap(map)
 });
+
+
+/*
+let mapObject = new map4d.MapObject({
+    id: "my_buildding",
+    location: [106.707764, 10.774544],
+    obj: "58a2b79436eace2398d47c01j",
+    texture: "C:/Users/Admin/source/repos/MapIOTLink/Map4dIOTLink/wwwroot/img/acbdanang.jpg",
+
+})
+let mapObject = new map4d.MapObject({
+    id: "myd_buildicngdddd", name: "Phuc",
+    location: [106.707764, 10.7745441],
+    obj: "58a2b79436eace2398d47c01",
+    texture: buildImage("https://nguoiquangnam.vn/uploads/news/2017/10/img_20151012_090107_12102015085909.jpg")
+});*/
+
+
+function buildImage(url) {
+    var img = new Image();
+    img.onerror = function () {
+        console.log("could not load image on URL " + url);
+    };
+    img.src = url;
+    return img;
+}
+
 $(function () {
     globalModule.initButton("option1", timeAfternoon);
     globalModule.initButton("option2", timeNight);
