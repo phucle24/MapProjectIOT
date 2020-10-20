@@ -155,9 +155,16 @@ let mapObject = new map4d.MapObject({
     location: [106.707764, 10.7745441],
     obj: "58a2b79436eace2398d47c01",
     texture: buildImage("https://nguoiquangnam.vn/uploads/news/2017/10/img_20151012_090107_12102015085909.jpg")
-});*/
-
-
+});
+mapObject.setMap(map);*/
+/*
+ let mapObject = new map4d.MapObject({
+    id: "kahcdh-san", name: "Phuc",
+    location: [106.707764, 10.7745441],
+    obj:  "https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/models/5eb3c2c5fc2a581128bd68a4.obj",
+      texture: "https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/textures/5e7c7ce74bc3cf1de4a871e6.JPG", draggable: true
+});
+mapObject.setMap(map);*/
 function buildImage(url) {
     var img = new Image();
     img.onerror = function () {
@@ -166,6 +173,47 @@ function buildImage(url) {
     img.src = url;
     return img;
 }
+
+// Tạo TileOverlay
+/*let tileOverlay = new map4d.TileOverlay(map4d.TileOverlayOptions = {
+    getUrl: (x, y, z, _3dMode) => {
+        if (!_3dMode) {
+            return `https://tile.openstreetmap.de/${z}/${x}/${y}.png`
+        }
+        else {
+            return null
+        }
+    },
+    minZoom: 14,
+    maxZoom: 17
+    });
+gerUrl(17, 67, 42, true);
+// Set tile overlay vào map cần vẽ
+tileOverlay.setMap(this.map)*/
+
+
+// Hàm chuyển lng sang x
+function lon2tile(lon, zoom) {
+    return (Math.floor((lon + 180) / 360 * Math.pow(2, zoom)));
+}
+
+// Hàm chuyển lat sang y
+function lat2tile(lat, zoom) {
+    return (Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom)));
+}
+
+// Lấy lng - lat - zoom từ Camera
+var longitude = map.getCamera().target.lng;
+var latitude = map.getCamera().target.lat;
+var zoom = map.getCamera().zoom;
+
+// Lấy giá trị x - y sau khi chuyển đổi 
+var x = lon2tile(longitude, zoom);
+var y = lon2tile(latitude, zoom);
+
+console.log(x);
+console.log(y);
+console.log(zoom);
 
 $(function () {
     globalModule.initButton("option1", timeAfternoon);
