@@ -11,26 +11,31 @@ namespace MapIOTLinkAPI.Services
     public class ObjectService
     {
 
-        private readonly IMongoCollection<ModelObject> _modelObjects;
+        private readonly IMongoCollection<MapObject> _modelObjects;
         public ObjectService(IMapIOTDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _modelObjects = database.GetCollection<ModelObject>(settings.MapIOTDBCollectionName);
+            _modelObjects = database.GetCollection<MapObject>(settings.MapIOTDBCollectionName);
 
         }
 
-        public List<ModelObject> Get()
+        public List<MapObject> Get()
         {
-            List<ModelObject> objects;
+            List<MapObject> objects;
             objects = _modelObjects.Find(emp => true).ToList();
             return objects;
         }
+        public MapObject GetbyId(string id) =>
+          _modelObjects.Find(p => p.Id == id).FirstOrDefault();
 
-        public ModelObject Create(ModelObject cli)
+        public MapObject Create(MapObject cli)
         {
             _modelObjects.InsertOne(cli);
             return cli;
         }
+        public void Update(string id, MapObject model) =>
+          _modelObjects.ReplaceOne(p => p.Id == id, model);
+
     }
 }

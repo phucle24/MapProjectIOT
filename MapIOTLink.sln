@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Map4dIOTLink", "Map4dIOTLink\Map4dIOTLink.csproj", "{F01177AC-72E5-4721-BD86-39253A0BCA23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapIOTLinkAPI", "MapIOTLinkAPI\MapIOTLinkAPI.csproj", "{4C253A8F-D397-4028-ADED-54615A57E5A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapIOTLinkAPI", "MapIOTLinkAPI\MapIOTLinkAPI.csproj", "{4C253A8F-D397-4028-ADED-54615A57E5A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapIOTLinkAdmin", "MapIOTLinkAdmin\MapIOTLinkAdmin.csproj", "{E66BAECF-C206-43A8-AC9C-0AA5F815303B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4C253A8F-D397-4028-ADED-54615A57E5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C253A8F-D397-4028-ADED-54615A57E5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C253A8F-D397-4028-ADED-54615A57E5A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E66BAECF-C206-43A8-AC9C-0AA5F815303B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E66BAECF-C206-43A8-AC9C-0AA5F815303B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E66BAECF-C206-43A8-AC9C-0AA5F815303B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E66BAECF-C206-43A8-AC9C-0AA5F815303B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

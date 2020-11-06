@@ -19,6 +19,8 @@ namespace MapIOTLinkAPI
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,8 +29,21 @@ namespace MapIOTLinkAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        [Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyAllowSpecificOrigins",
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://localhost:5002/",
+                                                          "https://localhost:5001/")
+                                                 .AllowAnyHeader();
+
+                                  });
+            });
+
             services.Configure<MapIOTDatabaseSettings>(
               Configuration.GetSection(nameof(MapIOTDatabaseSettings)));
 
@@ -52,10 +67,11 @@ namespace MapIOTLinkAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            // Apply to every Controller
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("MyAllowSpecificOrigins");
 
             app.UseAuthorization();
             app.UseSwagger();
@@ -68,6 +84,7 @@ namespace MapIOTLinkAPI
             {
                 endpoints.MapControllers();
             });
+         
         }
     }
 }

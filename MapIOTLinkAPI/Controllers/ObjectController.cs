@@ -20,17 +20,59 @@ namespace MapIOTLinkAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<ModelObject>> Get() => _objectService.Get();
+        public ActionResult<List<MapObject>> Get() => _objectService.Get();
+
+
+        [HttpGet("{id}")]
+        public ActionResult<MapObject> GetById(string id)
+        {
+            var modelObject = _objectService.GetbyId(id);
+
+            if (modelObject == null)
+            {
+                return NotFound();
+            }
+
+            return modelObject;
+        }
 
         [HttpPost]
-        public IActionResult Create(ModelObject cliente)
+        public IActionResult Create(MapObject cliente)
         {
-            _objectService.Create(cliente);
-
-            return CreatedAtRoute("", new
+            // Thêm object
+            if (!ModelState.IsValid)
             {
-                id = cliente.Id.ToString()
-            }, cliente);
+                return BadRequest("Object không hợp lệ");
+            }  
+            _objectService.Create(cliente);
+            
+            // Thêm object thành công
+            // Tính toán x - y - z  dựa vào lng - lat
+            var x = (int)(Math.Floor((cliente.Location.Lng + 180.0) / 360.0 * (1 << cliente.MinZoom)));
+            var y = (int)Math.Floor((1 - Math.Log(Math.Tan(ToRadians(cliente.Location.Lat)) + 1 / Math.Cos(ToRadians(cliente.Location.Lng))) / Math.PI) / 2 * (1 << cliente.MinZoom));
+            // Kiểm tra xem nếu mà x - y - z == null thì thêm mới x - y - z đồng thời add id object
+
+            // x-y-z đã == trong bảng tile thì chỉ việc update id object vào bảng tile
+            
+            return Ok();
+
+        }
+
+        private double ToRadians(double lng)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(string id, MapObject mo)
+        {
+            var modelObject = _objectService.GetbyId(id);
+            if(modelObject == null)
+            {
+                return BadRequest("Update không thành công");
+            }
+            _objectService.Update(id, mo);
+            return Ok();
         }
 
     }

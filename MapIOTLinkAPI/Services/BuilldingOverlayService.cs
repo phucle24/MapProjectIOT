@@ -2,15 +2,18 @@
 using MapIOTLinkAPI.Data.Configuration;
 using MapIOTLinkAPI.Models;
 using MapIOTLinkAPI.System;
+using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MapIOTLinkAPI.Services
 {
+    [EnableCors("CorsPolicy")]
     public class BuilldingOverlayService
     {
         // Query : Join 2 bảng
@@ -18,13 +21,13 @@ namespace MapIOTLinkAPI.Services
         // Kiểm tra request  === x - y - z
         // Return result
 
-        private readonly IMongoCollection<ModelObject> _modelObjects;
+        private readonly IMongoCollection<MapObject> _modelObjects;
         private readonly IMongoCollection<Tile> _modelTiles;
         public BuilldingOverlayService(IMapIOTDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _modelObjects = database.GetCollection<ModelObject>(settings.MapIOTDBCollectionName);
+            _modelObjects = database.GetCollection<MapObject>(settings.MapIOTDBCollectionName);
             _modelTiles = database.GetCollection<Tile>("Tiles");
 
         }
@@ -39,23 +42,54 @@ namespace MapIOTLinkAPI.Services
               var result = await _modelObjects.Find(_ => true).ToListAsync();
               return result;
           }*/
-        public List<ModelObjectViewModel> GetAll(int x, int y, int z)
+        public async Task<ModelObjectViewModel> GetAll(int x, int y, int z)
         {
+            // Cách 1
 
+            /*
+           var query = from p in _modelTiles.AsQueryable()
+                       where p.X == x && p.Y == y && p.Zoom == z
+                       select p.Id;
+           var query2 = query.ToString();
 
-            //1 . Lấy mảng objectId từ Tile
-            var query = from p in _modelTiles.AsQueryable()
-                        where p.X == x && p.Y == y && p.Zoom == z
-                        select new ModelObjectViewModel()
-                        {
-                            Objects = p.Objects,
-                        };
- /*           var query2 = from o in _modelObjects.AsQueryable()
-                         where o.Id == "5f8d348116b657ed2dbbcdaa"
-                         select o;
-*/
+           var tile = await _modelTiles.Find(e => e.Id == query2).FirstOrDefaultAsync();
 
-            return query.ToList();
+           */
+
+            // Cách 2
+            //1 . Lấy danh sách objectId từ Tile
+            var tile = await _modelTiles.Find(e => e.Y == y && e.X == x && e.Zoom == z).FirstOrDefaultAsync();
+            if(tile == null)
+            {
+                return new ModelObjectViewModel
+                {
+                    Code = "Ok",
+                    Message = "",
+                    Result = new ObjectViewModel
+                    {
+                        Objects = null
+                    }
+                };
+            }
+            // Khởi tạo List objects
+            List<MapObject> objects = new List<MapObject>();
+
+            //2. Lọc object với Id đã có
+            foreach (var item in tile.Objects)
+            {
+                var result = _modelObjects.Find(p => p.Id == item).FirstOrDefault();
+                objects.Add(result);
+            }
+                return new ModelObjectViewModel
+                {
+                    Code = "Ok",
+                    Message = "",
+                    Result = new ObjectViewModel
+                    {
+                        Objects = objects
+                    }
+                };
+            
         }
     }
 }

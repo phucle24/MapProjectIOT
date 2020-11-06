@@ -1,19 +1,4 @@
 ﻿
-var map = new map4d.Map(document.getElementById("map"),
-    {
-        zoom: 17,
-        maxZoom: 17,
-        center: [106.707764, 10.774544],
-        tilt: 60,
-        geolocate: true,
-        accessKey: "98fd21346d83bee24dc734231f7609c9",
-        geolocate: true,
-        controls: true,
-    }
-)
-map.enable3dMode(true);
-//set switch mode Auto for automatically switching between 2D & 3D
-map.setSwitchMode(map4d.SwitchMode.Auto);
 
 // Popup object
 
@@ -31,7 +16,7 @@ let clickMapsEventClick = map.addListener("click", (args) => {
 }, { object: true });
 
 
-/* Module show popup object */
+*//* Module show popup object *//*
 function showPopupDetail(isShow) {
     if (isShow) {
         $("#popupDetail").show();
@@ -43,7 +28,7 @@ $("#popupDetail .detail-close-button").click(function (e) {
     showPopupDetail(false);
 });
 
-/* Module show popup marker*/
+// Module show popup marker*//
 function showPopupDetail2(isShow) {
     if (isShow) {
         $("#popupDetail2").show();
@@ -54,7 +39,7 @@ function showPopupDetail2(isShow) {
 $("#popupDetail2 .detail-close-button").click(function (e) {
     showPopupDetail2(false);
 });
-
+/*
 
 // Bóng đổ
 $("#effect__shawdown").change(function () {
@@ -108,7 +93,7 @@ $("#btn__switch3d").click(function () {
     $("#btn__switch2d").css("display", "inline-block");
     map.enable3dMode(true);
 });
-/*var arrayLng = [];
+*//*var arrayLng = [];
 var arrayPolygon = [];
 map.addListener("click", (args) => {
     console.log("aaaaaaaaaa");
@@ -123,7 +108,7 @@ map.addListener("click", (args) => {
 
     polygon.setMap(map)
     console.log(arrayLng);
-}, { location: true })*/
+}, { location: true })*//*
 
 $('#btn_object').click(function () {
     console.log('aaaaa');
@@ -142,7 +127,7 @@ $('#btn_object').click(function () {
 });
 
 
-/*
+*//*
 let mapObject = new map4d.MapObject({
     id: "my_buildding",
     location: [106.707764, 10.774544],
@@ -164,7 +149,7 @@ mapObject.setMap(map);*/
     obj:  "https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/models/5eb3c2c5fc2a581128bd68a4.obj",
       texture: "https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/textures/5e7c7ce74bc3cf1de4a871e6.JPG", draggable: true
 });
-mapObject.setMap(map);*/
+mapObject.setMap(map);*//*
 function buildImage(url) {
     var img = new Image();
     img.onerror = function () {
@@ -175,7 +160,7 @@ function buildImage(url) {
 }
 
 // Tạo TileOverlay
-/*let tileOverlay = new map4d.TileOverlay(map4d.TileOverlayOptions = {
+*//*let tileOverlay = new map4d.TileOverlay(map4d.TileOverlayOptions = {
     getUrl: (x, y, z, _3dMode) => {
         if (!_3dMode) {
             return `https://tile.openstreetmap.de/${z}/${x}/${y}.png`
@@ -189,7 +174,7 @@ function buildImage(url) {
     });
 gerUrl(17, 67, 42, true);
 // Set tile overlay vào map cần vẽ
-tileOverlay.setMap(this.map)*/
+tileOverlay.setMap(this.map)*//*
 
 
 // Hàm chuyển lng sang x
@@ -213,10 +198,53 @@ var y = lon2tile(latitude, zoom);
 
 console.log(x);
 console.log(y);
-console.log(zoom);
+console.log(zoom);*/
 
+///////////////
+
+
+//var map;
+//function building()  {
+//   map = new map4d.Map(document.getElementById("map"),
+//        {
+//            zoom: 17,
+//            maxZoom: 17,
+//            center: [106.707764, 10.774544],
+//            tilt: 60,
+//            geolocate: true,
+//            accessKey: "98fd21346d83bee24dc734231f7609c9",
+//            geolocate: true,
+//            controls: true,
+//        }
+//    )
+//    map.enable3dMode(true);
+//    //set switch mode Auto for automatically switching between 2D & 3D
+//    map.setSwitchMode(map4d.SwitchMode.Auto);
+//    let buildingOverlayOptions= map4d.BuildingOverlayOptions = {
+//        getUrl: (x, y, z) => {
+//            return `https://lvh.vimap.vn/api/title/${z}/${x}/${y}`
+//        },
+//        minZoom: 17,
+//        maxZoom: 19
+//    }
+//    //let buildingOverlay = new map4d.BuildingOverlay(map4d.BuildingOverlayOptions = {
+//    //    getUrl: (x, y, z) => {
+//    //        // return `https://localhost:5001/api/BuilldingOverlay/${z}/${x}/${y}`
+//    //        return `https://lvh.vimap.vn/api/title/${z}/${x}/${y}`
+//    //    },
+//    //    minZoom: 17,
+//    //    maxZoom: 19
+//    //});
+//    //buildingOverlay.setMap(this.map)
+
+//    // Tạo BuildingOverlay
+//    let buildingOverlay = new map4d.BuildingOverlay(buildingOverlayOptions)
+//    // Set Building Overlay vào map cần vẽ
+//    buildingOverlay.setMap(this.map)
+//}
 $(function () {
-    globalModule.initButton("option1", timeAfternoon);
+   // building();
+    /*globalModule.initButton("option1", timeAfternoon);
     globalModule.initButton("option2", timeNight);
     globalModule.initButton("wheather_sun", wheatherSun);
     globalModule.initButton("wheather_rain", wheatherRain);
@@ -273,5 +301,5 @@ $(function () {
 
             }, { location: true })
         }
-    });
+    });*/
 });

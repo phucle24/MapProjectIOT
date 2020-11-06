@@ -1,8 +1,117 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div id="map" style="height:700px"></div>
+<div id="popupDetail" style="display: none;">
+    <div class="detail-content">
+        <div>Object Id: <span id="objId"></span></div>
+        <div>Object Name: <span id="objName"></span></div>
+        <div>
+            <input class="btn btn-info" value="Test button 1">
+            <input class="btn btn-success" value="Test button 2">
+            <input class="btn btn-warning" value="Test button 3">
+        </div>
+    </div>
+    <a class="detail-close-button" href="#close">×</a>
 </div>
+@section scripts {
+    <script src="//api.map4d.vn/sdk/map/js?key=177c42b23faad35757b497124e72a227&callback=callback&version=1.4.5"></script>
+    <script>
+        var maptest = {
+            init: function () {
+                maptest.setMap();
+                maptest.setOrverlay();
+            },
+            setMap: function () {
+                map = new map4d.Map(document.getElementById("map"),
+                    {
+                        center: [105.468851944494, 21.0496368522181],
+                        zoom: 17,
+                        geolocate: true,
+                        controls: true,
+                        tilt: 0,
+                        controlOptions: map4d.ControlOptions.BOTTOM_RIGHT,
+                        accessKey: '177c42b23faad35757b497124e72a227'
+                    }
+                )
+                map.setPlacesEnabled(true);
+                
+            },
+            setOrverlay: function () {
+                let buildingOverlayOptions= map4d.BuildingOverlayOptions = {
+                    getUrl: (x, y, z) => {
+                        return `https://localhost:5002/api/BuildingOverlay/${z}/${x}/${y}`
+                    },
+                    minZoom: 18,
+                    maxZoom: 18
+                }
+                // Tạo BuildingOverlay
+                let buildingOverlay = new map4d.BuildingOverlay(buildingOverlayOptions)
+                // Set Building Overlay vào map cần vẽ
+                buildingOverlay.setMap(map)
+            }
+        }
+        $(function () {
+            maptest.init();
+            showPopupDetail(false);
+
+	let clickMapsEventClick = map.addListener("click", (args) => {		
+		console.log("Object clicked: ");
+		console.log(args);
+		selectedId = args.object.getId();
+		
+		//get data
+		
+		var selectedObjectType = args.xa.type;
+
+		// get popup position
+			let offsetX = args.xa.offsetX;
+			let offsetY = args.xa.offsetY;
+			let objectName = args.object.getName();
+			// show popup
+			showPopupDetail(true);
+
+			// set position for popup
+			//$("#popupDetail").css("transform", "translate3d(" + offsetX + "px, " + offsetY + "px, 0px)");
+			$("#popupDetail").css("left", offsetX + "px");
+			$("#popupDetail").css("top", offsetY + "px");
+
+			// set content for popup
+			$("#popupDetail").find("#objId").html(selectedId);
+			$("#popupDetail").find("#objName").html(objectName);
+
+			if (selectedId != "5be55b80cbdf9f10f4f8bb58") {
+				$("#popupDetail").find(".btn-warning").hide();
+			} else {
+				$("#popupDetail").find(".btn-warning").show();
+			}
+	}, {object: true});
+
+	function showPopupDetail(isShow) {
+		if (isShow) {
+			$("#popupDetail").show();
+		} else {
+			$("#popupDetail").hide();
+		}
+	}
+
+	$("#popupDetail .detail-close-button").click(function (e) {
+		showPopupDetail(false);
+	});
+
+	$("#popupDetail .btn-info").click(function (e) {
+		alert("Click button 1 with id: " + $(this).parent().parent().find("#objId").html());
+	});
+
+	$("#popupDetail .btn-success").click(function (e) {
+		alert("Click button 2 with id: " + $(this).parent().parent().find("#objId").html());
+	});
+
+	$("#popupDetail .btn-warning").click(function (e) {
+		alert("Click button 3 with id: " + $(this).parent().parent().find("#objId").html());
+	});
+
+        });
+    </script>
+
+}

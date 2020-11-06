@@ -1,0 +1,176 @@
+﻿@model MapIOTLinkAPI.Models.MapObject
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h6>Thêm mới đối tượng</h6>
+
+<div id="popupDetail" style="display: none;">
+    <div class="detail-content">
+        <div>Object Id: <span id="objId"></span></div>
+        <div>Object Name: <span id="objName"></span></div>
+        <div>
+            <input class="btn btn-info" value="Test button 1">
+            <input class="btn btn-success" value="Test button 2">
+            <input class="btn btn-warning" value="Test button 3">
+        </div>
+    </div>
+    <a class="detail-close-button" href="#close">×</a>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Model.ObjUrl" class="control-label">Đối tượng</label>
+                            <select asp-for="Model.ObjUrl" class="custom-select">
+                                <option>Chọn đối tượng</option>
+                                <option value="https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/models/5e7d67ce4bc3cf1de4a87200.obj">Chung Cư 12 Tầng</option>
+                                <option value="https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/models/5eb3c276fc2a581128bd689e.obj">Công An</option>
+                                <option value="https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/models/5eb3c2c5fc2a581128bd68a4.obj">Khách Sạn Nhỏ</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Model.TextureUrl" class="control-label">Ảnh</label>
+                            <select asp-for="Model.ObjUrl" class="custom-select">
+                                <option >Chọn ảnh</option>
+                                <option value="https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/textures/5e7d67cf4bc3cf1de4a87204.jpg">Chung Cư 12 Tầng</option>
+                                <option value="https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/textures/5e7c81ee4bc3cf1de4a871f2.jpg">Công An</option>
+                                <option value="https://sw-hcm-1.vinadata.vn/v1/AUTH_4486f66f671c41bab0d3dea1904626d4/sdk/textures/5e7c7ce74bc3cf1de4a871e6.JPG">Khách Sạn Nhỏ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Location.Lng" class="control-label">Kinh độ <span class="asterisk">*</span></label>
+                            <input asp-for="Location.Lng" type="text" class="form-control" id="lng" />
+                            <span asp-validation-for="Location.Lng" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Location.Lat" class="control-label">Vĩ độ <span class="asterisk">*</span></label>
+                            <input asp-for="Location.Lat"  class="form-control" id="lat" />
+                            <span asp-validation-for="Location.Lat" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="Scale" class="control-label">Tỉ lệ</label>
+                            <input asp-for="Scale" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Bearing" class="control-label">Góc xoay</label>
+                            <input asp-for="Bearing" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Model.Height" class="control-label">Độ cao</label>
+                            <input asp-for="Model.Height" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="Name" class="control-label">Tên <span class="asterisk">*</span></label>
+                            <input asp-for="Name" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="Type" class="control-label">Loại đối tượng</label>
+                            <input asp-for="Type" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="MinZoom" class="control-label">Mức zoom tối thiểu</label>
+                            <input asp-for="MinZoom" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="MaxZoom" class="control-label">Mức zoom tối đa</label>
+                            <input asp-for="MaxZoom" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="map" style="height:400px"></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-row col-md-12">
+                    <label asp-for="ShortDescription" class="control-label">Mô tả ngắn</label>
+                    <input asp-for="ShortDescription" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-row col-md-12">
+                    <label asp-for="Description" class="control-label">Thông tin đối tượng</label>
+                    <textarea asp-for="Description" class="form-control"> </textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Scale" class="control-label">Loại thông tin</label>
+                    <input asp-for="Scale" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Bearing" class="control-label">Tỉnh/Thành Phố</label>
+                    <input asp-for="Bearing" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Model.Height" class="control-label">Huyện/Quận</label>
+                    <input asp-for="Model.Height" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Scale" class="control-label">Diện tích</label>
+                    <input asp-for="Scale" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Bearing" class="control-label">Tổ Phường</label>
+                    <input asp-for="Bearing" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Model.Height" class="control-label">Tổ Thôn Xóm</label>
+                    <input asp-for="Model.Height" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Scale" class="control-label">Chiều Cao</label>
+                    <input asp-for="Scale" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Bearing" class="control-label">Tên đường</label>
+                    <input asp-for="Bearing" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Model.Height" class="control-label">Ngõ-Ngách-Hẽm-Kiệt-Số Nhà</label>
+                    <input asp-for="Model.Height" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Scale" class="control-label">Số tầng</label>
+                    <input asp-for="Scale" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Bearing" class="control-label">Ngày bắt đầu</label>
+                    <input asp-for="Bearing" class="form-control" />
+                </div>
+                <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                    <label class="control-label" for="datepicker">Select Date</label>
+                    <input type="text" class="form-control" id="datepicker">
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

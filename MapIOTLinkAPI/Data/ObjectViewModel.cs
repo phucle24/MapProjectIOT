@@ -8,6 +8,6 @@ namespace MapIOTLinkAPI.Data
 {
     public class ObjectViewModel
     {
-        public string Name { get; set; }
+        public List<MapObject> Objects { get; set; }
     }
 }

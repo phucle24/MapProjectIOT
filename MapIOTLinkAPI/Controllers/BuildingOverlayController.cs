@@ -22,12 +22,12 @@ namespace MapIOTLinkAPI.Controllers
         }
 
 
-        // http://localhost:port/api/z/x/y
+        // http://localhost:port/api/BuilldingOverlay/z/x/y
         [HttpGet("{z}/{x}/{y}")]
-        public ActionResult GetAll(int x, int y, int z) 
+        public async Task<ModelObjectViewModel> GetAll(int x, int y, int z) 
         {
-            var result =  _buildingOverlayService.GetAll(x, y, z);
-             return Ok(result);
+            var result = await _buildingOverlayService.GetAll(x, y, z);
+             return result;
         }
 
     }
