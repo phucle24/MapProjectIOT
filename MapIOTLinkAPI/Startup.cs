@@ -19,8 +19,6 @@ namespace MapIOTLinkAPI
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,23 +30,14 @@ namespace MapIOTLinkAPI
         [Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("MyAllowSpecificOrigins",
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("https://localhost:5002/",
-                                                          "https://localhost:5001/")
-                                                 .AllowAnyHeader();
-
-                                  });
-            });
 
             services.Configure<MapIOTDatabaseSettings>(
               Configuration.GetSection(nameof(MapIOTDatabaseSettings)));
 
             services.AddSingleton<IMapIOTDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<MapIOTDatabaseSettings>>().Value);
+
+            services.AddSingleton<IPlaceService, PlaceService>();
 
             services.AddSingleton<ObjectService>();
             services.AddSingleton<TileService>();
@@ -71,7 +60,6 @@ namespace MapIOTLinkAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors("MyAllowSpecificOrigins");
 
             app.UseAuthorization();
             app.UseSwagger();

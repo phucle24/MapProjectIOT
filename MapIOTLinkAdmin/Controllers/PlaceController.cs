@@ -2,30 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MapIOTLinkAdmin.Services;
 using MapIOTLinkAPI.Catalog;
-using MapIOTLinkAPI.Models;
-using MapIOTLinkAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace MapIOTLinkAdmin.Controllers
 {
-    public class MapObjectController : Controller
+    public class PlaceController : Controller
     {
-        private readonly IMapApiClient _mapApiClient;
+        private readonly IPlaceApiClient _placeApiClient;
         private readonly IConfiguration _configuration;
 
-        public MapObjectController(IMapApiClient mapApiClient, IConfiguration configuration)
+        public PlaceController(IPlaceApiClient placeApiClient, IConfiguration configuration)
         {
-            _mapApiClient = mapApiClient;
+            _placeApiClient = placeApiClient;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var result = await _mapApiClient.GetObjectsPaging();
-            return Ok(result.ResultObj);
+            return View();
         }
-
         [HttpGet]
         public IActionResult Create()
         {
@@ -33,17 +30,17 @@ namespace MapIOTLinkAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ObjectCreateRequest request)
+        public async Task<IActionResult> Create(PlaceCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return View();
 
-            var result = await _mapApiClient.CreateObject(request);
+            var result = await _placeApiClient.CreatePlace(request);
 
             if (result.IsSuccessed)
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             ModelState.AddModelError("", result.Message);
-                return View(request);
+            return View(request);
         }
     }
 }

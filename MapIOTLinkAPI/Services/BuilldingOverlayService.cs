@@ -16,11 +16,6 @@ namespace MapIOTLinkAPI.Services
     [EnableCors("CorsPolicy")]
     public class BuilldingOverlayService
     {
-        // Query : Join 2 bảng
-        // Lọc
-        // Kiểm tra request  === x - y - z
-        // Return result
-
         private readonly IMongoCollection<MapObject> _modelObjects;
         private readonly IMongoCollection<Tile> _modelTiles;
         public BuilldingOverlayService(IMapIOTDatabaseSettings settings)

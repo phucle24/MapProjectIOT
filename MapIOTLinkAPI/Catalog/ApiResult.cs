@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MapIOTLinkAPI.Data
+namespace MapIOTLinkAPI.Catalog
 {
     public class ApiResult<T>
     {

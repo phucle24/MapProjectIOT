@@ -1,6 +1,4 @@
 ﻿using MapIOTLinkAPI.Catalog;
-using MapIOTLinkAPI.Data;
-using MapIOTLinkAPI.System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -11,15 +9,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MapIOTLinkAPI.Services
+namespace MapIOTLinkAdmin.Services
 {
-    public class MapApiClient : IMapApiClient
+    public class PlaceApiClient : IPlaceApiClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MapApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration,
+        public PlaceApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration,
                                  IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
@@ -28,7 +26,7 @@ namespace MapIOTLinkAPI.Services
 
         }
 
-        public async Task<ApiResult<bool>> CreateObject(ObjectCreateRequest request)
+        public async Task<ApiResult<bool>> CreatePlace(PlaceCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
@@ -36,7 +34,7 @@ namespace MapIOTLinkAPI.Services
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"/api/objects", httpContent);
+            var response = await client.PostAsync($"/api/places", httpContent);
             var result = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
@@ -44,16 +42,6 @@ namespace MapIOTLinkAPI.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
             }
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
-        }
-        public async Task<ApiResult<PageResult<ObjectVM>>> GetObjectsPaging()
-        {
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
-
-            var response = await client.GetAsync($"/api/objects");
-            var body = await response.Content.ReadAsStringAsync();
-            var mapobject = JsonConvert.DeserializeObject<ApiSuccessResult<PageResult<ObjectVM>>>(body);
-            return mapobject;
         }
     }
 }

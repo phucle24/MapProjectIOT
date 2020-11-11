@@ -55,7 +55,7 @@
                 Interface
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Quản lý 3D Object -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
@@ -63,22 +63,30 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/user/index">Danh sách</a>
+                        <a class="collapse-item" href="/mapobject/index">Danh sách</a>
                         <a class="collapse-item" href="/mapobject/create">Thêm mới</a>
                     </div>
                 </div>
-            </li>        <!-- Nav Item - Pages Collapse Menu -->
+            </li>
+            <!-- Quản lý địa điểm -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Quản lý địa điểm</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/place/index">Danh sách</a>
+                        <a class="collapse-item" href="/place/create">Thêm mới</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Quản lý chức năng</span>
-                </a>
-            </li>
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Quản lý địa điểm</span>
                 </a>
             </li>
             <!-- Nav Item - Pages Collapse Menu -->
@@ -347,10 +355,11 @@
 
     <!-- Page level plugins -->
     <script src="/vendor/chart.js/Chart.min.js"></script>
-
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.pack.js"></script>
     <!-- Page level custom scripts -->
     <script src="/js/demo/chart-area-demo.js"></script>
     <script src="/js/demo/chart-pie-demo.js"></script>
+    <script src="~/js/event.js"></script>
 
     <script src="//api.map4d.vn/sdk/map/js?key=177c42b23faad35757b497124e72a227&callback=callback&version=1.4.5"></script>
     <script>
@@ -403,8 +412,7 @@
                 $("#lat").val(lat_map);
                 $("#lng").val(lng_map);
                 clickEvent.remove();
-            }, { location: true, maker: true })
-
+            }, { location: true, maker: true })       
         });
     </script>
 </body>

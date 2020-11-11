@@ -11,5 +11,6 @@ namespace MapIOTLinkAPI.Data.Configuration
         public string ConnectionString { get ; set; }
         public string DatabaseName { get ; set ; }
         public string MapIOTDBCollectionName2 { get ; set; }
+        public string MapIOTDBCollectionNamePlace { get; set; }
     }
 }
